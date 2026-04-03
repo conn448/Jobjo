@@ -887,6 +887,7 @@ app.get('/', (req, res) => {
         if (direction === 'right') {
             liked.push(job);
             card.style.transform = 'translateX(600px) rotate(20deg)';
+            if (job.redirect_url) window.open(job.redirect_url, '_blank', 'noopener');
         } else {
             passed++;
             card.style.transform = 'translateX(-600px) rotate(-20deg)';
