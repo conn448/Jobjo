@@ -28,9 +28,6 @@ app.get('/api/jobs/search', async (req, res) => {
             app_id: ADZUNA_APP_ID,
             app_key: ADZUNA_APP_KEY,
             results_per_page: 20,
-            page,
-            content_type: 'application/json',
-            'salary_include_unknown': 1,
             sort_by: 'date',
         };
         if (what) params['what'] = what;
@@ -87,7 +84,6 @@ app.post('/api/jobs/match', async (req, res) => {
             results_per_page: 10,
             what,
             sort_by: 'relevance',
-            'salary_include_unknown': 1,
         };
         const response = await axios.get(`${ADZUNA_BASE}/1`, { params });
         const jobs = response.data.results.map(job => ({
