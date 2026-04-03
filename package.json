@@ -1,1 +1,23 @@
-{\n  "name": "Jobjo",\n  "version": "1.0.0",\n  "description": "A project to manage jobs",\n  "main": "index.js",\n  "scripts": {\n    "start": "node index.js",\n    "dev": "nodemon index.js"\n  },\n  "dependencies": {\n    "express": "^4.17.1",\n    "mongoose": "^5.10.9",\n    "jsonwebtoken": "^8.5.1",\n    "axios": "^0.21.1",\n    "cors": "^2.8.5",\n    "helmet": "^4.4.1",\n    "express-rate-limit": "^5.3.0",\n    "multer": "^1.4.2",\n    "dotenv": "^10.0.0"\n  },\n  "author": "conn448",\n  "license": "ISC"\n}
+{
+  "name": "Jobjo",
+  "version": "1.0.0",
+  "description": "A project to manage jobs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.10.9",
+    "jsonwebtoken": "^8.5.1",
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "helmet": "^4.4.1",
+    "express-rate-limit": "^5.3.0",
+    "multer": "^1.4.2",
+    "dotenv": "^10.0.0"
+  },
+  "author": "conn448",
+  "license": "ISC"
+}
