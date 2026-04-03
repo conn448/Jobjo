@@ -1,80 +1,51 @@
 // app.js
 
 const express = require('express');
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { JSearch } = require('rapidapi-jsearch');
-
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
+// Middleware to parse JSON bodies
+app.use(express.json());
 
-// MongoDB connection
-mongoose.connect('mongodb://localhost:27017/jobs', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+// Public API Endpoints
 
-// User Schema
-const UserSchema = new mongoose.Schema({
-  username: String,
-  password: String,
-  profile: Object,
-  applications: Array
-});
-const User = mongoose.model('User', UserSchema);
-
-// JWT secret key
-const JWT_SECRET = 'your_secret_key';
-
-// Authentication middleware
-const authenticateJWT = (req, res, next) => {
-  const token = req.header('x-auth-token');
-  if (!token) return res.sendStatus(403);
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-};
-
-// Authentication endpoint
-app.post('/api/auth', (req, res) => {
-  const { username, password } = req.body;
-  User.findOne({ username, password }, (err, user) => {
-    if (err || !user) return res.sendStatus(403);
-    const token = jwt.sign({ id: user._id }, JWT_SECRET);
-    res.json({ token });
-  });
+// GET /api/jobs/search for searching jobs without login
+app.get('/api/jobs/search', (req, res) => {
+    // Logic to return job listings based on search criteria
+    // Example response: res.json([{ id: 1, title: 'Software Engineer' }, { id: 2, title: 'Data Scientist' }]);
 });
 
-// Job search endpoint
-app.get('/api/jobs', authenticateJWT, (req, res) => {
-  const jsearch = new JSearch({ apiKey: 'your_rapidapi_key' });
-  jsearch.search({ query: 'developer' }).then(results => {
-    res.json(results);
-  }).catch(err => res.status(500).json({ error: err.message }));
+// POST /api/jobs/match for skill-based job matching without authentication
+app.post('/api/jobs/match', (req, res) => {
+    const skills = req.body.skills;
+    // Logic to match jobs based on skills provided
+    // Example response: res.json([{ id: 1, title: 'Software Engineer' }]);
 });
 
-// Profile management
-app.get('/api/profile', authenticateJWT, (req, res) => {
-  User.findById(req.user.id, (err, user) => {
-    if (err || !user) return res.sendStatus(404);
-    res.json(user);
-  });
+// Interactive HTML Frontend for Job Swiping
+app.get('/', (req, res) => {
+    res.send(`<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>Job Swiping</title>
+    <style>
+        /* Add your styling for the swiping interface here */
+    </style>
+</head>
+<body>
+    <h1>Job Swiping Interface</h1>
+    <div id='swiping-interface'>
+        <!-- Job cards will be displayed here -->
+    </div>
+    <script>
+        // JavaScript for the swiping functionality
+        // Fetch and display jobs from /api/jobs/search
+    </script>
+</body>
+</html>`);
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
-});
-
-// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
